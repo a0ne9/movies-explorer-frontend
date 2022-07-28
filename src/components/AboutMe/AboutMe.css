@@ -134,7 +134,7 @@
   }
 }
 
-@media screen and (max-width: 500px) {
+@media screen and (max-width: 750px) {
   .aboutMe__caption {
     margin-left: auto;
     margin-right: auto;

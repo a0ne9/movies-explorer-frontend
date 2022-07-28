@@ -46,7 +46,7 @@
     max-width: 680px;
     text-align: center;
   }
-}  @media screen and (max-width: 500px) {
+}  @media screen and (max-width: 750px) {
   .promo__image {
     max-width: 320px;
     margin-right: auto;

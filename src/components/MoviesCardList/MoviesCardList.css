@@ -13,7 +13,7 @@
   margin-bottom: 30px;
 }
 
-@media screen and (max-width: 900px) {
+@media screen and (max-width: 1200px) {
   .movies__card-list {
     grid-template-columns: 339px 339px;
     grid-template-rows: 257px 257px;
@@ -21,7 +21,7 @@
   }
 }
 
-@media screen and (max-width: 500px) {
+@media screen and (max-width: 750px) {
   .movies__card-list {
     grid-template-columns: 300px;
     grid-template-rows: 257px 257px;

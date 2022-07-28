@@ -7,7 +7,7 @@ function Header() {
   const currentLocation = useLocation();
   const navigate = useNavigate();
   return (
-    <div
+    <section
       className={
         currentLocation.pathname === "/"
           ? "header__container"
@@ -27,6 +27,7 @@ function Header() {
               Регистрация
             </NavLink>
             <button
+                type="button"
               className="header__login-button"
               onClick={() => {
                 navigate("/signin");
@@ -39,7 +40,7 @@ function Header() {
           <Navigation />
         )}
       </div>
-    </div>
+    </section>
   );
 }
 

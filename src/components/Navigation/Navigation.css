@@ -207,4 +207,8 @@
   .navigation__main-link {
     margin-top: 144px;
   }
+
+  .navigation__open-button {
+    margin-right: 14px;
+  }
 }

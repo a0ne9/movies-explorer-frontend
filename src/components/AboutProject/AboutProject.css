@@ -67,8 +67,10 @@
   margin: 0;
   padding: 0;
   margin-top: 110px;
-  margin-left: 70px;
+  margin-left: auto;
+  margin-right: auto;
   display: grid;
+  justify-content: center;
   grid-template-columns: 228px 912px;
   grid-template-rows: 36px 36px;
 }
@@ -120,10 +122,19 @@
   color: #a0a0a0;
 }
 
+@media screen and (max-width: 1200px) {
+  .about__timing-grid {
+    grid-template-columns: 140px 528px;
+    margin-top: 93px;
+
+  }
+}
+
 @media screen and (max-width: 900px) {
   .about__caption {
-    margin-left: 50px;
-    width: 668px;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 668px;
   }
   .about__flex-container {
     margin-left: 50px;
@@ -136,23 +147,16 @@
     font-size: 12px;
     line-height: 18px;
   }
-  .about__timing-grid{
-    grid-template-columns: 140px 528px;
-    margin-left: 50px;
-    margin-top: 93px;
-    margin-right: 50px;
-  }
   .about__caption-text {
     margin-top: 90px;
   }
 }
 
-@media screen and (max-width: 500px) {
+@media screen and (max-width: 750px) {
   .about__caption {
-    margin-left: 18px;
-    width: 284px;
+    max-width: 284px;
   }
-  .about__grid-header{
+  .about__grid-header {
     font-size: 18px;
     line-height: 22px;
     margin-bottom: 16px;
@@ -174,7 +178,7 @@
     font-size: 11px;
     line-height: 16px;
   }
-  .about__timing-grid{
+  .about__timing-grid {
     grid-template-columns: 100px 184px;
     margin-left: 5%;
     margin-top: 60px;

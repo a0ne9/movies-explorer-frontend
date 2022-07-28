@@ -10,7 +10,7 @@
 }
 
 .movies__card-image {
-  border-radius: 10px;
+  border-radius: 10px 10px 0 0;
 }
 
 .movies__card-info {
@@ -51,14 +51,15 @@
   margin: 0;
   padding: 0;
   background-image: url("../../vendor/images/like__button_unliked.svg");
-  width: 16px;
-  height: 16px;
+  width: 25px;
+  height: 25px;
   background-size: cover;
+  margin-right: 8px;
   background-repeat: no-repeat;
   border: none;
   box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.09);
   border-radius: 50px;
-  margin-top: 14px;
+  margin-top: 12px;
   cursor: pointer;
   transition: 0.3s;
 }
@@ -84,20 +85,17 @@
   opacity: 0.8;
 }
 
-@media screen and (max-width: 900px) {
+@media screen and (max-width: 1200px) {
   .movies__card-image {
     width: 339px;
     height: 190px;
-  }
-  .movies__card-button {
-    margin-right: 12px;
   }
   .movies__card-duration {
     margin-bottom: 14px;
   }
 }
 
-@media screen and (max-width: 500px) {
+@media screen and (max-width: 750px) {
   .movies__card-image {
     width: 300px;
     height: 168px;

@@ -31,9 +31,15 @@
 }
 
 .portfolio__link {
+ text-decoration: none;
   display: flex;
   justify-content: space-between;
   border-bottom: #e8e8e8 1px solid;
+  transition: 0.3s;
+}
+
+.portfolio__link:hover {
+  opacity: 0.8;
 }
 
 .portfolio__link:nth-child(3) {
@@ -64,7 +70,7 @@
 
 .portfolio__link-image {
   width: 29px;
-  height: 60px;
+  height: 50px;
   margin-top: 20px;
   transition: 0.3s;
   cursor: pointer;

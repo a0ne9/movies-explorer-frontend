@@ -1,5 +1,5 @@
 .filterCheckbox__container {
-  max-width: 1140px;
+  width: 90%;
   display: flex;
   justify-content: center;
   margin-left: auto;

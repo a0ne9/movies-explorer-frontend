@@ -64,15 +64,6 @@ function Form(props) {
           required
           defaultValue={props.nameValue}
         />
-        <span
-          className={
-            nameTouched === true
-              ? "form__error-span form__error-span_visible"
-              : "form__error-span"
-          }
-        >
-          {nameError}
-        </span>
       </div>
 
       <div

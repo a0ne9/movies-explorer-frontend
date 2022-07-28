@@ -2,9 +2,9 @@ import "./LoadMore.css"
 
 function LoadMore() {
    return (
-       <div className="loadMore__container">
-           <button className="loadMore__button" >Ещё</button>
-       </div>
+       <section className="loadMore__container">
+           <button type="button" className="loadMore__button" >Ещё</button>
+       </section>
    )
 }
 

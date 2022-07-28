@@ -3,7 +3,7 @@ import profilePic from "../../vendor/images/profile__pic.svg";
 
 function AboutMe() {
   return (
-    <div className="aboutMe__container">
+    <section className="aboutMe__container">
       <div className="aboutMe__caption">
         <h2 className="aboutMe__caption-text">Студент</h2>
       </div>
@@ -25,7 +25,7 @@ function AboutMe() {
         </div>
         <img className="aboutMe__photo" src={profilePic} alt="фото профиля" />
       </div>
-    </div>
+    </section>
   );
 }
 
