@@ -8,7 +8,7 @@ import Header from "../Header/Header";
 
 function Main() {
   return (
-    <>
+    <main>
       <Header />
       <Promo />
       <AboutProject />
@@ -16,7 +16,7 @@ function Main() {
       <AboutMe />
       <Portfolio />
       <Footer />
-    </>
+    </main>
   );
 }
 

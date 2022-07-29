@@ -97,9 +97,6 @@
     font-size: 28px;
     line-height: 50px;
   }
-  .portfolio__link-image {
-    margin-top: 0;
-  }
 }
 
 @media screen and (max-width: 500px) {
@@ -121,8 +118,8 @@
     line-height: 28px;
   }
   .portfolio__link-image {
-    margin-top: 0;
+    margin-top: 20px;
     width: 14px;
-    height: 24px;
+    height: 28px;
   }
 }

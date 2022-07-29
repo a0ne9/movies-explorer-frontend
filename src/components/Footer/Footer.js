@@ -2,7 +2,7 @@ import "./Footer.css";
 
 function Footer() {
   return (
-    <section className="footer__container">
+    <footer className="footer__container">
       <div className="footer__caption">
         <p className="footer__caption-text">
           Учебный проект Яндекс.Практикум х BeatFilm.
@@ -16,7 +16,7 @@ function Footer() {
           <p className="footer__socials-text">Facebook</p>
         </div>
       </div>
-    </section>
+    </footer>
   );
 }
 

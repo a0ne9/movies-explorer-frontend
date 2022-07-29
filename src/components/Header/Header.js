@@ -7,7 +7,7 @@ function Header() {
   const currentLocation = useLocation();
   const navigate = useNavigate();
   return (
-    <section
+    <header
       className={
         currentLocation.pathname === "/"
           ? "header__container"
@@ -40,7 +40,7 @@ function Header() {
           <Navigation />
         )}
       </div>
-    </section>
+    </header>
   );
 }
 

@@ -19,8 +19,8 @@ function AboutMe() {
             заниматься фриланс-заказами и ушёл с постоянной работы.
           </p>
           <div className="aboutMe__links">
-            <p className="aboutMe__link">Facebook</p>
-            <p className="aboutMe__link">Github</p>
+            <a href="https://www.facebook.com/" target="_blank" className="aboutMe__link">Facebook</a>
+            <a href="https://github.com/a0ne9" target="_blank" className="aboutMe__link">Github</a>
           </div>
         </div>
         <img className="aboutMe__photo" src={profilePic} alt="фото профиля" />
