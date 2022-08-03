@@ -1,10 +1,16 @@
-import "./Login.css"
+import "./Login.css";
 import Form from "../Form/Form";
 
-function Login() {
-    return(
-        <Form title={"Рады видеть!"} buttonText={"Войти"}/>
-    )
+function Login(props) {
+  return (
+    <Form
+      title={"Рады видеть!"}
+      buttonText={"Войти"}
+      onSubmit={props.onSubmit}
+      requestStatus={props.requestStatus}
+      requestSending={props.requestSending}
+    />
+  );
 }
 
-export default Login
+export default Login;

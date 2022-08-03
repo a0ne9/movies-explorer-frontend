@@ -1,11 +1,19 @@
-import "./LoadMore.css"
+import "./LoadMore.css";
 
-function LoadMore() {
-   return (
-       <section className="loadMore__container">
-           <button type="button" className="loadMore__button" >Ещё</button>
-       </section>
-   )
+function LoadMore(props) {
+  return (
+    <section className="loadMore__container">
+      <button
+        type="button"
+        className={
+          props.isButtonVisible ? "loadMore__button" : "loadMore__button_hidden"
+        }
+        onClick={props.handleClick}
+      >
+        Ещё
+      </button>
+    </section>
+  );
 }
 
-export default LoadMore
+export default LoadMore;

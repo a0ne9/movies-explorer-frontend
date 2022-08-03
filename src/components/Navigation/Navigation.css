@@ -199,6 +199,10 @@
 }
 
 @media screen and (max-width: 500px) {
+  .navigation__sidebar {
+    width: 100%;
+  }
+
   .navigation__profile-link {
     margin: 0;
     margin-top: 444px;
@@ -209,6 +213,9 @@
   }
 
   .navigation__open-button {
-    margin-right: 14px;
+    margin-right: 15px;
+  }
+  .navigation__close-button {
+    margin-right: 185px;
   }
 }

@@ -1,17 +1,24 @@
 import "./MoviesCardList.css";
 import MoviesCard from "../MoviesCard/MoviesCard";
+import {useLocation} from "react-router";
 
-import  {Movies}  from "../../utils/Movies";
-
-function MoviesCardList() {
+function MoviesCardList(props) {
+  const currentPath = useLocation()
   return (
     <ul className="movies__card-list">
-      {Movies.map((movie) => (
+      {props.movies.map((movie) => (
         <MoviesCard
-          imageLink={movie.link}
+          name={movie.nameRU}
+          imageLink={currentPath.pathname==="/movies"? movie.image.url : movie.image}
+          minutes={movie.duration}
           isLiked={movie.isLiked}
           id={movie.id}
           key={movie.id}
+          movie={movie}
+          savedMovies={props.savedMovies}
+          onLike={props.onLike}
+          trailerLink = {movie.trailerLink}
+          onDelete={props.onDelete}
         />
       ))}
     </ul>

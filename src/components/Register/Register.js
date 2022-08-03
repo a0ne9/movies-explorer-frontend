@@ -1,8 +1,16 @@
 import "./Register.css";
 import Form from "../Form/Form";
 
-function Register() {
-  return <Form title={"Добро пожаловать!"} buttonText={"Зарегистрироваться"}/>;
+function Register(props) {
+  return (
+    <Form
+      title={"Добро пожаловать!"}
+      buttonText={"Зарегистрироваться"}
+      onSubmit={props.onSubmit}
+      requestStatus={props.requestStatus}
+      requestSanding={props.requestSending}
+    />
+  );
 }
 
-export default Register
+export default Register;

@@ -10,6 +10,8 @@
 }
 
 .movies__card-image {
+  width: 270px;
+  height: 151px;
   border-radius: 10px 10px 0 0;
 }
 
@@ -29,6 +31,10 @@
   color: #000000;
   margin-left: 12px;
   margin-top: 14px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 150px;
 }
 
 .movies__card-duration {
@@ -44,6 +50,7 @@
   color: #a0a0a0;
   margin-left: 12px;
   margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 .movies__card-button {
