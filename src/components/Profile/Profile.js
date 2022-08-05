@@ -2,67 +2,65 @@ import "./Profile.css";
 import Header from "../Header/Header";
 import "../Form/Form.css";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext/CurrentUserContext";
+import api from "../../utils/MainApi";
 import React from "react";
 
 function Profile(props) {
+  const currentUser = React.useContext(CurrentUserContext);
   const [defaultName, setDefaultName] = React.useState("");
-  const [headerName, setHeaderName] = React.useState("");
   const [name, setName] = React.useState("");
   const [defaultEmail, setDefaultEmail] = React.useState("");
   const [email, setEmail] = React.useState("");
-  const [disabled, setDisabled] = React.useState(true);
-  const [requestMessage, setRequestMessage] = React.useState("");
+  const [requestMessage, setRequestMessage] = React.useState(props.requestStatus);
+  const [isValid, setIsValid] = React.useState(false);
+  const [errors, setErrors] = React.useState({})
+  const [isLoading, setIsLoading] = React.useState(false)
 
-
-  const currentUser = React.useContext(CurrentUserContext);
+  const disabled = isValid===false || (defaultName === name && defaultEmail === email) || isLoading
 
 
   React.useEffect(() => {
-    console.log("check")
-    console.log(currentUser)
     setName(currentUser.name);
     setEmail(currentUser.email);
-    setHeaderName(currentUser.name)
-    setDefaultName(currentUser.name);
-    setDefaultEmail(currentUser.email);
-    setRequestMessage("")
-  }, []);
+  }, [currentUser]);
+
+  React.useEffect(() => {
+    setRequestMessage(props.requestStatus)
+    setIsLoading(props.requestSending)
+    api.getUser().then(res => {
+      setName(res.name)
+      setDefaultName(res.name)
+      setEmail(res.email)
+      setDefaultEmail(res.email)
+    }).catch(err => {
+      console.log(err)
+    })
+  }, [props]);
 
 
 
   function handleNameChange(e) {
-    const error = e.target.validationMessage;
     setName(e.target.value);
-    if (name !== defaultName && !error) {
-      setDisabled(false);
-    } else {
-      setDisabled(true);
-    }
+    setErrors({ ...errors, [e.target.name]: e.target.validationMessage });
+    setIsValid(e.target.closest("form").checkValidity());
   }
 
   function handleEmailChange(e) {
-    const error = e.target.validationMessage;
     setEmail(e.target.value);
-    if (email !== defaultEmail && !error) {
-      setDisabled(false);
-    } else {
-      setDisabled(true);
-    }
+    setErrors({ ...errors, [e.target.name]: e.target.validationMessage });
+    setIsValid(e.target.closest("form").checkValidity());
   }
 
   function handleSubmit(e) {
-    setRequestMessage(props.requestStatus)
     e.preventDefault();
     props.onSubmit(name, email);
-    setHeaderName(name)
-    setDisabled(true)
   }
 
   return (
     <>
-      <Header />
+      <Header loggedIn={props.loggedIn}/>
       <form className="form" action="#" onSubmit={handleSubmit}>
-        <h2 className="form__title">{`Привет, ${headerName || currentUser.name}!`}</h2>
+        <h2 className="form__title">{`Привет, ${currentUser.name}!`}</h2>
         <div className="form__input-container">
           <p className="form__input-title">Имя</p>
           <div className="form__span-container">
@@ -78,6 +76,7 @@ function Profile(props) {
               value={name || ""}
               onChange={handleNameChange}
             />
+            <span className="profile__span">{errors.name}</span>
           </div>
         </div>
 
@@ -97,6 +96,7 @@ function Profile(props) {
               value={email || ""}
               onChange={handleEmailChange}
             />
+            <span className="profile__span">{errors.email}</span>
           </div>
         </div>
         <span className="form__request-status"> {requestMessage} </span>

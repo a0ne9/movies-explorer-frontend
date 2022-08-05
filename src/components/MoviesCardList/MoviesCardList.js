@@ -1,8 +1,12 @@
 import "./MoviesCardList.css";
 import MoviesCard from "../MoviesCard/MoviesCard";
+import React from "react";
 import {useLocation} from "react-router";
 
+
 function MoviesCardList(props) {
+
+
   const currentPath = useLocation()
   return (
     <ul className="movies__card-list">

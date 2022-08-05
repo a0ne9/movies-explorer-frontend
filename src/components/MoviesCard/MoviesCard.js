@@ -1,5 +1,7 @@
 import "./MoviesCard.css";
 import { useLocation } from "react-router";
+import React from "react";
+import { Duration }  from "../../utils/Constants"
 
 function MoviesCard(props) {
   const currentPath = useLocation();
@@ -8,13 +10,6 @@ function MoviesCard(props) {
     props.movie.id &&
     props.savedMovies.some((mov) => mov.movieId === props.movie.id);
 
-  function setDuration(minutes) {
-    const hours = Math.floor(minutes / 60);
-    const min = minutes % 60;
-    const result = hours > 0 ? `${hours}ч ${min}м` : `${min}м`;
-
-    return result;
-  }
 
   function handleMovieLike() {
     if (!isLiked) {
@@ -32,13 +27,15 @@ function MoviesCard(props) {
         nameEN: props.movie.nameEN,
       });
     } else if (isLiked) {
-      const movie = props.savedMovies.filter((mov) => mov.movieId === props.movie.id )
-      props.onDelete(movie[0])
+      const movie = props.savedMovies.filter(
+        (mov) => mov.movieId === props.movie.id
+      );
+      props.onDelete(movie[0]);
     }
   }
 
   function handleDelete() {
-    props.onDelete(props.movie)
+    props.onDelete(props.movie);
   }
 
   return (
@@ -46,7 +43,11 @@ function MoviesCard(props) {
       <a href={props.movie.trailerLink} target="_blank">
         <img
           alt="постер"
-          src={currentPath.pathname==="/movies"? `https://api.nomoreparties.co/${props.imageLink}` : props.imageLink}
+          src={
+            currentPath.pathname === "/movies"
+              ? `https://api.nomoreparties.co/${props.imageLink}`
+              : props.imageLink
+          }
           className="movies__card-image"
         />
       </a>
@@ -54,18 +55,24 @@ function MoviesCard(props) {
       <div className="movies__card-caption">
         <div className="movies__card-info">
           <h2 className="movies__card-name">{props.name}</h2>
-          <p className="movies__card-duration">{setDuration(props.minutes)}</p>
+          <p className="movies__card-duration">{Duration(props.minutes)}</p>
         </div>
-        {currentPath.pathname ==="/movies" ? <button
+        {currentPath.pathname === "/movies" ? (
+          <button
             onClick={handleMovieLike}
             type="button"
             className={
-               isLiked
-                      ? "movies__card-button movies__card-button_liked"
-                      : "movies__card-button"
+              isLiked
+                ? "movies__card-button movies__card-button_liked"
+                : "movies__card-button"
             }
-        /> : <button className="movies__card-button movies__card-button_delete" onClick={handleDelete}/> }
-
+          />
+        ) : (
+          <button
+            className="movies__card-button movies__card-button_delete"
+            onClick={handleDelete}
+          />
+        )}
       </div>
     </li>
   );

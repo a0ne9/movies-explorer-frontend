@@ -2,12 +2,13 @@ import React from "react";
 
 import "./SearchForm.css";
 import FilterCheckbox from "../FilterCheckbox/Filtercheckbox";
-import { useLocation } from "react-router";
+import {useLocation} from "react-router";
 
 function SearchForm(props) {
-  const [value, setValue] = React.useState("");
-  const [checkboxStatus, setCheckboxStatus] = React.useState(false);
-  const location = useLocation();
+
+  const location = useLocation()
+  const [value, setValue] = React.useState(localStorage.getItem("inputValue") || "");
+  const [checkboxStatus, setCheckboxStatus] = React.useState(JSON.parse(localStorage.getItem("checkboxStatus")) || false);
 
   function handleValueChange(e) {
     setValue(e.target.value);
@@ -30,24 +31,18 @@ function SearchForm(props) {
   };
 
   React.useEffect(() => {
-    if (location.pathname === "/movies") {
-      const inputValue = localStorage.getItem("inputValue");
-      setValue(inputValue);
-      const checkboxValue = localStorage.getItem("checkBoxStatus");
-      if (checkboxValue === "/true") {
-        setCheckboxStatus(true);
-      } else {
-        setCheckboxStatus(false);
-      }
-    }
-  }, [location.pathname]);
-
-  React.useEffect(() => {
     if (!value) {
       const input = document.getElementById("film-field");
       input.setCustomValidity("Нужно ввести ключевое слово");
     }
   }, [value]);
+
+  React.useEffect(()=> {
+    if (location.pathname === "/saved-movies") {
+      setValue("")
+      setCheckboxStatus(false)
+    }
+  }, [location.pathname])
 
   return (
     <form className="searchForm__container" onSubmit={handleSubmit}>

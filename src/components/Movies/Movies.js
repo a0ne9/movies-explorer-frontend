@@ -22,7 +22,7 @@ function Movies(props) {
   const [loadButtonVisible, setLoadButtonVisible] = React.useState(false);
 
   //localStorage.clear()
-  // console.log(localStorage);
+  //console.log(localStorage);
 
   React.useEffect(() => {
     if (localStorage.getItem("foundMovies")) {
@@ -32,13 +32,16 @@ function Movies(props) {
   }, []);
 
   React.useEffect(() => {
-    if (searchedMovies.length > maxCards) {
+    setRenderingMovies(searchedMovies.slice(0, maxCards));
+  }, [searchedMovies, maxCards, screenWidth]);
+
+  React.useEffect(() => {
+    if (searchedMovies.length > renderingMovies.length) {
       setLoadButtonVisible(true);
     } else {
       setLoadButtonVisible(false);
     }
-    setRenderingMovies(searchedMovies.slice(0, maxCards));
-  }, [searchedMovies, inputValue, checkboxStatus]);
+  }, [renderingMovies.length]);
 
   React.useEffect(() => {
     if (screenWidth > 1200) {
@@ -51,7 +54,7 @@ function Movies(props) {
       setMaxCards(5);
       setMoreCards(1);
     }
-  }, [screenWidth, maxCards]);
+  }, [screenWidth]);
 
   function handleMoreButtonClick() {
     if (renderingMovies.length < searchedMovies.length) {
@@ -77,30 +80,41 @@ function Movies(props) {
 
   const handleSearch = (value, checkboxStatus) => {
     localStorage.setItem("inputValue", value);
+    localStorage.setItem("checkboxStatus", JSON.stringify(checkboxStatus));
     setInputValue(value);
     setCheckboxStatus(checkboxStatus);
     setIsSeeking(true);
-    moviesApi
-      .getMovies()
-      .then((data) => {
-        const res = filterMovies(data, value, checkboxStatus);
-        setSearchedMovies(res);
-        localStorage.setItem("foundMovies", JSON.stringify(res));
-      })
-      .catch(() => {
-        setSearchStatus(
-          "Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз."
-        );
-      })
-      .finally(() => {
-        setIsSeeking(false);
-        setSearchDone(true);
-      });
+    if (localStorage.getItem("searchedMovies")) {
+      const movies = JSON.parse(localStorage.getItem("searchedMovies"));
+      const res = filterMovies(movies, value, checkboxStatus);
+      setSearchedMovies(res);
+      localStorage.setItem("foundMovies", JSON.stringify(res));
+      setIsSeeking(false);
+      setSearchDone(true);
+    } else {
+      moviesApi
+        .getMovies()
+        .then((data) => {
+          localStorage.setItem("searchedMovies", JSON.stringify(data));
+          const res = filterMovies(data, value, checkboxStatus);
+          setSearchedMovies(res);
+          localStorage.setItem("foundMovies", JSON.stringify(res));
+        })
+        .catch(() => {
+          setSearchStatus(
+            "Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз."
+          );
+        })
+        .finally(() => {
+          setIsSeeking(false);
+          setSearchDone(true);
+        });
+    }
   };
 
   return (
     <>
-      <Header />
+      <Header loggedIn={props.loggedIn} />
       <SearchForm onSearch={handleSearch} />
       {isSeeking ? (
         <Preloader />

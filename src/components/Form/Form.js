@@ -9,15 +9,29 @@ function Form(props) {
   const currentPath = useLocation();
   const navigate = useNavigate();
   const [requestMessage, setRequestMessage] = React.useState("");
+  const [loading, setLoading] = React.useState(false);
 
   const { values, handleChange, resetFrom, errors, isValid } =
     useFormWithValidation();
 
-  const disabled = !isValid && !props.requestSanding;
+  console.log(isValid, loading);
+
+  React.useEffect(() => {
+    if (props.requestStatus) {
+      setRequestMessage(props.requestStatus);
+    }
+    if (props.requestSending) {
+      setLoading(props.requestSending);
+    }
+  }, [props]);
 
   React.useEffect(() => {
     setRequestMessage("");
-  }, []);
+  }, [currentPath]);
+
+  const disabled = !isValid && loading;
+
+  const inputDisabled = loading;
 
   function handleRegistrationSubmit(e) {
     setRequestMessage(props.requestStatus);
@@ -33,7 +47,6 @@ function Form(props) {
     setRequestMessage(props.requestStatus);
     e.preventDefault();
     props.onSubmit({ email: values.email, password: values.password });
-    console.log("login srabotal");
   }
 
   return (
@@ -69,6 +82,7 @@ function Form(props) {
             required
             value={values.name || ""}
             onChange={handleChange}
+            disabled={inputDisabled}
           />
           <span className="form__input-error">{errors.name || ""}</span>
         </div>
@@ -90,6 +104,7 @@ function Form(props) {
           pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
           value={values.email || ""}
           onChange={handleChange}
+          disabled={inputDisabled}
         />
         <span className="form__input-error">{errors.email || ""}</span>
       </div>
@@ -106,6 +121,7 @@ function Form(props) {
           required
           value={values.password || ""}
           onChange={handleChange}
+          disabled={inputDisabled}
         />
         <span className="form__input-error">{errors.password || ""}</span>
       </div>

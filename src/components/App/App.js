@@ -1,5 +1,5 @@
 import "./App.css";
-import { Routes, Route, useNavigate } from "react-router";
+import { Routes, Route, useNavigate, useLocation } from "react-router";
 import Main from "../Main/Main";
 import React from "react";
 import Movies from "../Movies/Movies";
@@ -11,45 +11,78 @@ import PageNotFound from "../PageNotFound/PageNotFound";
 import api from "../../utils/MainApi";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext/CurrentUserContext";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
+import ErrorPopup from "../ErrorPopup/ErrorPopup";
 
 function App() {
   const [loggedIn, setLoggedIn] = React.useState(false);
   const [currentUser, setCurrentUser] = React.useState({});
   const [likedMovies, setLikedMovies] = React.useState([]);
   const [requestStatus, setRequestStatus] = React.useState("");
-  const [errorMessage, setErrorMessage] = React.useState("")
   const [requestSending, setRequestSending] = React.useState(false);
+  const [popupVisible, setPopupVisible] = React.useState(false);
 
   const navigate = useNavigate();
+  const location = useLocation();
 
   React.useEffect(() => {
-    const jwt = localStorage.getItem("jwt");
-    if (jwt) {
+    handleCheckToken();
+  }, []);
+
+  React.useEffect(() => {
+    if (location.pathname === "/signin" || location.pathname === "/signup") {
+      navigate("/");
+    }
+    if (loggedIn) {
       api
         .getUser()
         .then((res) => {
-          setLoggedIn(true);
           setCurrentUser(res);
-          //navigate("/movies");
+          console.log(currentUser);
         })
         .catch((err) => {
           console.log(err);
         });
     }
-  }, []);
+  }, [loggedIn]);
 
   React.useEffect(() => {
-    api
-      .getMovies()
-      .then((movies) => {
-        setLikedMovies(
-          movies.filter((movie) => movie.owner === currentUser._id)
-        );
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+    if (loggedIn) {
+      api
+        .getMovies()
+        .then((movies) => {
+          console.log(currentUser);
+          console.log("reqmov", movies);
+          console.log(
+            "filteredmov",
+            movies.filter((movie) => movie.owner === currentUser._id)
+          );
+          setLikedMovies(
+            movies.filter((movie) => movie.owner === currentUser._id)
+          );
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [loggedIn, currentUser]);
+
+  function handleCheckToken() {
+    const jwt = localStorage.getItem("jwt");
+    if (jwt) {
+      api
+        .checkToken(jwt)
+        .then((res) => {
+          if (res) {
+            setLoggedIn(true);
+            navigate(location.pathname);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+          navigate("/");
+        });
+    }
+  }
 
   function handleCardLike(movie) {
     api
@@ -59,6 +92,7 @@ function App() {
       })
       .catch((err) => {
         console.log(`произошла ошибка ${err.message}`);
+        openPopup();
       });
   }
 
@@ -72,52 +106,57 @@ function App() {
       })
       .catch((err) => {
         console.log(err);
+        setRequestStatus("Произошла ошибка");
+        openPopup();
       });
   }
 
   function handleRegistrationSubmit({ name, password, email }) {
+    setRequestStatus("Отправка данных");
     setRequestSending(true);
     api
       .register({ name, email, password })
       .then((res) => {
         if (res) {
+          handleLoginSubmit({ password, email });
           setRequestSending(false);
-          setCurrentUser(res);
-          navigate("/signin");
         }
       })
       .catch((err) => {
         console.log(err);
         setRequestSending(false);
-        setErrorMessage("Ошибка на сервере, попробуйте позже");
+        setRequestStatus("Ошибка на сервере, попробуйте позже");
       });
   }
 
   function handleLoginSubmit({ password, email }) {
-    setRequestSending(true)
+    setRequestStatus("Отправка данных");
+    setRequestSending(true);
     api
       .login({ email, password })
       .then((res) => {
         if (res) {
           localStorage.setItem("jwt", res.token);
-          setRequestSending(false)
+          setRequestSending(false);
           setLoggedIn(true);
           navigate("/movies");
         }
       })
       .catch((err) => {
-        setErrorMessage("Ошибка на сервере, попробуйте позже");
-        setRequestSending(false)
+        setRequestStatus("Ошибка на сервере, попробуйте позже");
+        setRequestSending(false);
         console.log(err);
       });
   }
 
   function handleUpdateUser(name, email) {
-    setRequestStatus("Отправка данных");
+    setRequestSending(true);
     api
       .updateUser({ name, email })
       .then((res) => {
         setCurrentUser(res.data);
+        console.log(res);
+        setRequestSending(false);
         setRequestStatus("Данные профиля обновлены");
       })
       .catch((err) => {
@@ -132,6 +171,14 @@ function App() {
     navigate("/");
   }
 
+  function openPopup() {
+    setPopupVisible(true);
+  }
+
+  function closePopup() {
+    setPopupVisible(false);
+  }
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <Routes>
@@ -140,7 +187,7 @@ function App() {
           element={
             <Register
               onSubmit={handleRegistrationSubmit}
-              requestStatus={errorMessage}
+              requestStatus={requestStatus}
               requestSending={requestSending}
             />
           }
@@ -150,17 +197,18 @@ function App() {
           element={
             <Login
               onSubmit={handleLoginSubmit}
-              requestStatus={errorMessage}
+              requestStatus={requestStatus}
               requestSending={requestSending}
             />
           }
         />
-        <Route path="/" element={<Main />} />
+        <Route path="/" element={<Main loggedIn={loggedIn} />} />
         <Route element={<ProtectedRoute isLoggedIn={loggedIn} />}>
           <Route
             path="movies"
             element={
               <Movies
+                loggedIn={loggedIn}
                 savedMovies={likedMovies}
                 onLike={handleCardLike}
                 onDelete={handleCardDislike}
@@ -173,6 +221,7 @@ function App() {
             path="/saved-movies"
             element={
               <SavedMovies
+                loggedIn={loggedIn}
                 savedMovies={likedMovies}
                 onDelete={handleCardDislike}
               />
@@ -184,8 +233,10 @@ function App() {
             path="/profile"
             element={
               <Profile
+                loggedIn={loggedIn}
                 onSubmit={handleUpdateUser}
                 onLogout={handleLogout}
+                requestSending={requestSending}
                 requestStatus={requestStatus}
               />
             }
@@ -194,6 +245,7 @@ function App() {
 
         <Route path="*" element={<PageNotFound />} />
       </Routes>
+      <ErrorPopup isVisible={popupVisible} onClose={closePopup} />
     </CurrentUserContext.Provider>
   );
 }
