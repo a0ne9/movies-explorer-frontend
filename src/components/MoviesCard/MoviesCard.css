@@ -1,0 +1,110 @@
+.movies__card {
+  background: #fdfdfd;
+  box-shadow: 0px 16px 24px rgba(0, 0, 0, 0.05);
+  border-radius: 10px;
+}
+
+.movies__card-caption {
+  display: flex;
+  justify-content: space-between;
+}
+
+.movies__card-image {
+  width: 270px;
+  height: 151px;
+  border-radius: 10px 10px 0 0;
+}
+
+.movies__card-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.movies__card-name {
+  margin: 0;
+  padding: 0;
+  font-family: "Inter", Arial, sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 16px;
+  color: #000000;
+  margin-left: 12px;
+  margin-top: 14px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 150px;
+}
+
+.movies__card-duration {
+  margin: 0;
+  padding: 0;
+  font-family: "Inter", Arial, sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 13px;
+  display: flex;
+  align-items: center;
+  color: #a0a0a0;
+  margin-left: 12px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.movies__card-button {
+  background: none;
+  margin: 0;
+  padding: 0;
+  background-image: url("../../vendor/images/like__button_unliked.svg");
+  width: 25px;
+  height: 25px;
+  background-size: cover;
+  margin-right: 8px;
+  background-repeat: no-repeat;
+  border: none;
+  box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.09);
+  border-radius: 50px;
+  margin-top: 12px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.movies__card-button_liked {
+  background-image: url("../../vendor/images/like__button__liked.svg");
+}
+
+.movies__card-button_delete {
+  background: none;
+  border: none;
+  background-image: url("../../vendor/images/delete-icon.svg");
+  background-size: cover;
+  width: 16px;
+  height: 16px;
+  margin-top: 14px;
+  margin-right: 12px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.movies__card-button_delete:hover {
+  opacity: 0.8;
+}
+
+@media screen and (max-width: 1200px) {
+  .movies__card-image {
+    width: 339px;
+    height: 190px;
+  }
+  .movies__card-duration {
+    margin-bottom: 14px;
+  }
+}
+
+@media screen and (max-width: 750px) {
+  .movies__card-image {
+    width: 300px;
+    height: 168px;
+  }
+}

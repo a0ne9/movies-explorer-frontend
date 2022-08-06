@@ -1,0 +1,14 @@
+.movies__not-found {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  margin-left: 45%;
+  margin-right: 45%;
+  font-family: "Inter", Arial, sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 16px;
+  color: #000000;
+  text-align: center;
+}
